@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "380403784647",
+    "firebase_url": "https://groupgift-3a2ac.firebaseio.com",
+    "project_id": "groupgift-3a2ac",
+    "storage_bucket": "groupgift-3a2ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380403784647:android:4f4082b8088200b8",
+        "android_client_info": {
+          "package_name": "com.laskiewicz.troy.groupgift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380403784647-0rh4jutj8g3fqt8e4ae3s25hospbp2g3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.laskiewicz.troy.groupgift",
+            "certificate_hash": "2d0acfd280f4e20327900feda2fcdcda352a025e"
+          }
+        },
+        {
+          "client_id": "380403784647-shie4k1oh0lo6r0r807bbl83m9lrornn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5q32xp6UX8pN-7ZzyZiVb0CZ-6BJ3vek"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380403784647-shie4k1oh0lo6r0r807bbl83m9lrornn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380403784647:android:dc7bb60ed641dd78",
+        "android_client_info": {
+          "package_name": "com.tlaskie.groupgift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380403784647-rfk1vjcaf98qb678rahqmjisonrm4j31.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tlaskie.groupgift",
+            "certificate_hash": "754b9e5bd52f11db8b375396e12797bdda643034"
+          }
+        },
+        {
+          "client_id": "380403784647-8ph1793i97lf7p2ij4a8lnriit7p3q0r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tlaskie.groupgift",
+            "certificate_hash": "2d0acfd280f4e20327900feda2fcdcda352a025e"
+          }
+        },
+        {
+          "client_id": "380403784647-shie4k1oh0lo6r0r807bbl83m9lrornn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5q32xp6UX8pN-7ZzyZiVb0CZ-6BJ3vek"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380403784647-shie4k1oh0lo6r0r807bbl83m9lrornn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
