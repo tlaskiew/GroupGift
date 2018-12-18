@@ -1,6 +1,7 @@
 package com.tlaskie.groupgift;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +18,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +32,7 @@ public class createAccount extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private String TAG = "devDebug";
+    private boolean available;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,6 @@ public class createAccount extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d("HELP", "createUserWithEmail:success");
                                 user = mAuth.getCurrentUser();
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("users").child(user.getUid());
@@ -82,10 +86,12 @@ public class createAccount extends AppCompatActivity {
                                 myRef.setValue(userInfo);
                                 UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
                                 user.updateProfile(profileUpdate);
+                                //Add to list of current usernames in use
+                                myRef = database.getReference("usernames").child(username);
+                                myRef.setValue(user.getUid());
                                 signedIn();
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.d(TAG, "FAILED...");
                                 Toast.makeText(getApplicationContext(), "Account Creation Failed!", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -108,6 +114,8 @@ public class createAccount extends AppCompatActivity {
             return false;
         }
     }
+
+
 
     void signedIn(){
         finish();

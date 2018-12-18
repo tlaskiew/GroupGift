@@ -38,6 +38,32 @@ public class Hub extends AppCompatActivity {
             text.setText(email);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database.getReference("users").child(user.getUid()).child("wishlist").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    wishlist.clear();
+                    wishlist.add("Wishlist QuickView:");
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        String name = dsp.child("Name").getValue().toString();
+                        String desc = dsp.child("Description").getValue().toString();
+                        String price = dsp.child("Price").getValue().toString();
+                        String location = dsp.child("Location").getValue().toString();
+
+                        // Making sure no duplicates
+                        if (!wishlist.contains(name)) {
+                            // Adding and Displaying list to user
+                            wishlist.add(name);
+
+                        }
+                    }
+                    addToList();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             database.getReference("users").child(user.getUid()).child("wishlist").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

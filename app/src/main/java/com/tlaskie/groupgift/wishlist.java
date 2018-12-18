@@ -52,7 +52,8 @@ public class wishlist extends AppCompatActivity {
 
             //Set up and add to list spinner
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            database.getReference("users").child(user.getUid()).child("wishlist").addListenerForSingleValueEvent(new ValueEventListener() {
+            DatabaseReference myRef = database.getReference("users").child(user.getUid()).child("wishlist");
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // Loop through rewards in database and display current rewards
@@ -76,6 +77,7 @@ public class wishlist extends AppCompatActivity {
 
                 }
             });
+
 
 
             //Update the wishlist item details below
@@ -111,7 +113,6 @@ public class wishlist extends AppCompatActivity {
                         attr.setText("");
                     }
                 }
-
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
