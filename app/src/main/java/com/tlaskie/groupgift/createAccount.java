@@ -60,6 +60,8 @@ public class createAccount extends AppCompatActivity {
 
         if(email.isEmpty() || password.isEmpty() || username.isEmpty() || passwordConfirm.isEmpty()){
             Toast.makeText(getApplicationContext(), "Please Fill In Everything!", Toast.LENGTH_LONG).show();
+        }else if(username.contains("~")){
+            Toast.makeText(getApplicationContext(), "Username Cannot Contain '~'.", Toast.LENGTH_LONG).show();
         }else if(!isValidPassword(password)){
             Toast toast = Toast.makeText(getApplicationContext(), "Password Must Contain 3 Numbers.", Toast.LENGTH_LONG);
             TextView view = (TextView) toast.getView().findViewById(android.R.id.message);

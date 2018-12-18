@@ -7,6 +7,8 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<String> items;
+
     public Adapter(Context context, List<String> items){
         this.context = context;
         this.items=items;
@@ -29,7 +32,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         ((Item)viewHolder).textView.setText(items.get(i));
     }
 
@@ -40,9 +43,11 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public class Item extends RecyclerView.ViewHolder{
         TextView textView;
+        CheckBox checkBox;
         public Item(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.item);
+            checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
 }
