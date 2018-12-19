@@ -19,9 +19,10 @@
         <activity android:name=".createAccount" />
         <activity android:name=".Hub" />
         <activity android:name=".wishlist" />
-        <activity android:name=".accountSettings"/>
+        <activity android:name=".accountSettings" />
         <activity android:name=".friends" />
-        <activity android:name=".account"></activity>
+        <activity android:name=".secretGiftGroup" />
+        <activity android:name=".createGiftGroup"></activity>
     </application>
 
 </manifest>

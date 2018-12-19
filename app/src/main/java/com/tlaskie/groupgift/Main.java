@@ -51,11 +51,11 @@ public class Main extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 user = mAuth.getCurrentUser();
-                                Context context = getApplicationContext();
-                                Toast.makeText(context, "Signed-In!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Signed-In!", Toast.LENGTH_LONG).show();
                                 signedIn();
                             } else {
                                 // If sign in fails, display a message to the user.
+                                Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_LONG).show();
                             }
                         }
                     });

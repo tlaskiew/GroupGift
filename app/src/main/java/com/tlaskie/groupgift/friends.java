@@ -79,14 +79,16 @@ public class friends extends AppCompatActivity {
         database.getReference("users").child(user.getUid()).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String Friends = dataSnapshot.getValue().toString();
-                String arrayOfFriends[] = Friends.split("~");
-                curFriends.addAll(Arrays.asList(arrayOfFriends));
-                for(int i = 0; i < recyclerView.getChildCount(); i++){
-                    CheckBox current = (recyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.checkbox));
-                    String friend = ((TextView) recyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.item)).getText().toString();
-                    if(curFriends.contains(friend)){
-                        current.setChecked(true);
+                if(dataSnapshot.exists()) {
+                    String Friends = dataSnapshot.getValue().toString();
+                    String arrayOfFriends[] = Friends.split("~");
+                    curFriends.addAll(Arrays.asList(arrayOfFriends));
+                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                        CheckBox current = (recyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.checkbox));
+                        String friend = ((TextView) recyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.item)).getText().toString();
+                        if (curFriends.contains(friend)) {
+                            current.setChecked(true);
+                        }
                     }
                 }
             }
@@ -95,8 +97,6 @@ public class friends extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     void returnToMain(){

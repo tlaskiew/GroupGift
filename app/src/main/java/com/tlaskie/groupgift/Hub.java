@@ -135,6 +135,11 @@ public class Hub extends AppCompatActivity {
         startActivity(intent);
     }
 
+    void goToSecretGiftGroup(View v){
+        Intent intent = new Intent(this, secretGiftGroup.class);
+        startActivity(intent);
+    }
+
     void addToList(){
         Spinner wish = findViewById(R.id.spinnerQuickList);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, wishlist);

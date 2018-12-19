@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textItemNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textTitleWishlistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/textItemNum"/>
+
+    <TextView
+        android:id="@+id/textWishlistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textTitleWishlistName"
+        app:layout_constraintTop_toBottomOf="@+id/textItemNum"/>
+
+    <TextView
+        android:id="@+id/textTitleWishlistDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Description"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleWishlistName" />
+
+    <TextView
+        android:id="@+id/textWishlistDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/textTitleWishlistDescription"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleWishlistName" />
+
+    <TextView
+        android:id="@+id/textTitleWishlistPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Price:"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleWishlistDescription" />
+
+    <TextView
+        android:id="@+id/textWishlistPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/textTitleWishlistPrice"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleWishlistDescription"/>
+
+    <TextView
+        android:id="@+id/textTitleWishlistLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Location:"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleWishlistPrice" />
+
+    <TextView
+        android:id="@+id/textWishlistLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/textTitleWishlistLocation"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleWishlistPrice" />
+
+
+</android.support.constraint.ConstraintLayout>

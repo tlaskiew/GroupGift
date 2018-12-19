@@ -129,6 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#34a91a"
+                android:onClick="goToSecretGiftGroup"
                 android:text="Go" />
 
             <TextView
