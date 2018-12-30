@@ -56,7 +56,7 @@ public class Hub extends AppCompatActivity {
 
                         }
                     }
-                    addToList();
+                    addToList(wishlist);
                 }
 
                 @Override
@@ -82,7 +82,7 @@ public class Hub extends AppCompatActivity {
 
                         }
                     }
-                    addToList();
+                    addToList(wishlist);
                 }
 
                 @Override
@@ -140,9 +140,9 @@ public class Hub extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void addToList(){
+    void addToList(List<String> list){
         Spinner wish = findViewById(R.id.spinnerQuickList);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, wishlist);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         wish.setAdapter(dataAdapter);
     }

@@ -6,6 +6,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,6 +36,7 @@ public class wishlist extends AppCompatActivity {
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private List<String> wishlist = new ArrayList<>();
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class wishlist extends AppCompatActivity {
         }else {
             //Setup spinner
             wishlist.add("Your Wishlist:");
-            addToList();
+            addToList(wishlist);
 
             //Set up and add to list spinner
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -67,7 +70,7 @@ public class wishlist extends AppCompatActivity {
                         if (!wishlist.contains(name)) {
                             // Adding and Displaying list to user
                             wishlist.add(name);
-                            addToList();
+                            addToList(wishlist);
                         }
                     }
                 }
@@ -94,11 +97,16 @@ public class wishlist extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                                     if (tempParent.getItemAtPosition(tempPosition).toString().equals(dsp.child("Name").getValue().toString())) {
+                                        String name = dsp.child("Name").getValue().toString();
                                         String desc = dsp.child("Description").getValue().toString();
                                         String price = dsp.child("Price").getValue().toString();
                                         String location = dsp.child("Location").getValue().toString();
-                                        TextView attr = findViewById(R.id.textAttr);
-                                        attr.setText("Description: " + desc + "\nPrice: " + price + "\nWhere To Buy: " + location + "\n");
+
+                                        List<String> item = new ArrayList<>();
+                                        item.add(name + "~" + desc + "~" + price + "~" + location);
+                                        recyclerView = findViewById(R.id.recyclerviewwishlist);
+                                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                        recyclerView.setAdapter(new AdapterItem(getApplicationContext(), item));
                                     }
                                 }
                             }
@@ -109,8 +117,9 @@ public class wishlist extends AppCompatActivity {
                             }
                         });
                     }else{
-                        TextView attr = findViewById(R.id.textAttr);
-                        attr.setText("");
+                        recyclerView = findViewById(R.id.recyclerviewwishlist);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        recyclerView.setAdapter(null);
                     }
                 }
 
@@ -138,7 +147,7 @@ public class wishlist extends AppCompatActivity {
 
                         }
                     }
-                    addToList();
+                    addToList(wishlist);
                 }
 
                 @Override
@@ -170,20 +179,32 @@ public class wishlist extends AppCompatActivity {
         EditText location = findViewById(R.id.itemLocation);
 
         if(check(name) && check(desc) && check(price) && check(location)) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("users").child(user.getUid()).child("wishlist").child(name.getText().toString());
-            Map<String, Object> userInfo = new HashMap<>();
-            userInfo.put("Name", name.getText().toString());
-            userInfo.put("Description", desc.getText().toString());
-            userInfo.put("Price", price.getText().toString());
-            userInfo.put("Location", location.getText().toString());
-            myRef.setValue(userInfo);
-            name.setText("");
-            desc.setText("");
-            price.setText("");
-            location.setText("");
-            wishlist.add(name.getText().toString());
-            addToList();
+            if(name.length() > 32){
+                Toast.makeText(getApplicationContext(), "Name Can't Be Longer Than 32!", Toast.LENGTH_SHORT).show();
+            }else if(desc.length() > 32){
+                Toast.makeText(getApplicationContext(), "Description Can't Be Longer Than 32!", Toast.LENGTH_SHORT).show();
+            }else if(price.length() > 32){
+                Toast.makeText(getApplicationContext(), "Price Can't Be Longer Than 32!", Toast.LENGTH_SHORT).show();
+            }else if(location.length() > 32){
+                Toast.makeText(getApplicationContext(), "Location Can't Be Longer Than 32!", Toast.LENGTH_SHORT).show();
+            }else {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("users").child(user.getUid()).child("wishlist").child(name.getText().toString());
+                Map<String, Object> userInfo = new HashMap<>();
+                userInfo.put("Name", name.getText().toString());
+                userInfo.put("Description", desc.getText().toString());
+                userInfo.put("Price", price.getText().toString());
+                userInfo.put("Location", location.getText().toString());
+                myRef.setValue(userInfo);
+                name.setText("");
+                desc.setText("");
+                price.setText("");
+                location.setText("");
+                wishlist.add(name.getText().toString());
+                addToList(wishlist);
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), "Please Fill In Everything!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -225,9 +246,9 @@ public class wishlist extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void addToList(){
+    void addToList(List<String> list){
         Spinner wish = findViewById(R.id.spinnerCurrentWishlist);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, wishlist);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         wish.setAdapter(dataAdapter);
     }

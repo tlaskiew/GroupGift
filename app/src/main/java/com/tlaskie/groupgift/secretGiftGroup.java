@@ -12,13 +12,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +54,10 @@ public class secretGiftGroup extends AppCompatActivity {
                 if(!tempParent.getItemAtPosition(position).toString().equals("Select Group To View")) {
                     showDetails(tempParent.getItemAtPosition(position).toString());
                 }else{
-                    //Insert Clear here
+                    showDetails("clear");
+                    findViewById(R.id.textPersonTitle).setVisibility(View.INVISIBLE);
+                    TextView text = findViewById(R.id.textPerson);
+                    text.setText("");
                 }
             }
 
@@ -60,9 +67,7 @@ public class secretGiftGroup extends AppCompatActivity {
             }
         });
 
-        groupNames.add("Select Group To View");
         getGroups();
-
     }
 
     void getGroups(){
@@ -71,12 +76,13 @@ public class secretGiftGroup extends AppCompatActivity {
         database.getReference("users").child(user.getUid()).child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                groupNames.add("Select Group To View");
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         groupNames.add(dsp.child("Name").getValue().toString());
                     }
-                    addToList();
                 }
+                addToList(groupNames);
             }
 
             @Override
@@ -91,8 +97,12 @@ public class secretGiftGroup extends AppCompatActivity {
         database.getReference("users").child(user.getUid()).child("groups").child(selected).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String personsUID = dataSnapshot.child("Your Secret Person").getValue().toString();
-                updateAdapter(personsUID, selected);
+                if(dataSnapshot.exists()) {
+                    String personsUID = dataSnapshot.child("Your Secret Person").getValue().toString();
+                    updateAdapter(personsUID, selected);
+                }else{
+                    updateAdapter("none", "none" );
+                }
             }
 
             @Override
@@ -103,36 +113,56 @@ public class secretGiftGroup extends AppCompatActivity {
     }
 
     void updateAdapter(String personsUID, final String selected){
+        if(personsUID.equals("none") && selected.equals("none")){
+            recyclerView = findViewById(R.id.recyclerviewsecretgroup);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            recyclerView.setAdapter(null);
+        }else {
+            //Get and Populate the Adapter with user's wishlist
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database.getReference("users").child(personsUID).child("wishlist").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    List<String> details = new ArrayList<>();
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        String name = dsp.child("Name").getValue().toString();
+                        String desc = dsp.child("Description").getValue().toString();
+                        String price = dsp.child("Price").getValue().toString();
+                        String location = dsp.child("Location").getValue().toString();
+                        details.add(name + "~" + desc + "~" + price + "~" + location);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference("users").child(personsUID).child("wishlist").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> details = new ArrayList<>();
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    String name = dsp.child("Name").getValue().toString();
-                    String desc = dsp.child("Description").getValue().toString();
-                    String price = dsp.child("Price").getValue().toString();
-                    String location = dsp.child("Location").getValue().toString();
-                    Log.d("DevDebug", name + "~" + desc + "~" + price + "~" + location);
-                    details.add(name + "~" + desc + "~" + price + "~" + location);
+                    }
+                    findViewById(R.id.textPersonTitle).setVisibility(View.VISIBLE);
+                    recyclerView = findViewById(R.id.recyclerviewsecretgroup);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.setAdapter(new AdapterWishlist(getApplicationContext(), details));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-                recyclerView = findViewById(R.id.recyclerviewsecretgroup);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                recyclerView.setAdapter(new AdapterWishlist(getApplicationContext(), details));
-            }
+            });
+            //Collect User's Name
+            database.getReference("users").child(personsUID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String name = dataSnapshot.child("Username").getValue().toString();
+                    TextView text = findViewById(R.id.textPerson);
+                    text.setText(name);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
-    void addToList(){
+    void addToList(List<String> list){
         Spinner groups = findViewById(R.id.spinnerGroups);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, groupNames);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         groups.setAdapter(dataAdapter);
     }
@@ -146,5 +176,37 @@ public class secretGiftGroup extends AppCompatActivity {
         finish();
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
+    }
+
+    void deleteGroup(View v){
+        //Delete Group For Everyone
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        Spinner spin = findViewById(R.id.spinnerGroups);
+        final String groupName = spin.getSelectedItem().toString();
+        if(!groupName.equals("Select Group To View")) {
+            database.getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        if (dsp.child("groups").child(groupName).exists()) {
+                            dsp.child("groups").child(groupName).getRef().removeValue();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            groupNames.remove(groupName);
+            addToList(groupNames);
+            spin.setSelection(0);
+            recyclerView = findViewById(R.id.recyclerviewsecretgroup);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            recyclerView.setAdapter(null);
+        }else{
+            Toast.makeText(getApplicationContext(), "Select A Group To Delete!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
