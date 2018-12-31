@@ -2,20 +2,15 @@ package com.tlaskie.groupgift;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +75,6 @@ public class wishlist extends AppCompatActivity {
 
                 }
             });
-
 
             //Update the wishlist item details below
             Spinner curWishList = findViewById(R.id.spinnerCurrentWishlist);
@@ -263,5 +257,4 @@ public class wishlist extends AppCompatActivity {
             }
         }
     }
-
 }

@@ -58,12 +58,12 @@ public class Hub extends AppCompatActivity {
                     }
                     addToList(wishlist);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
             });
+
             database.getReference("users").child(user.getUid()).child("wishlist").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -84,7 +84,6 @@ public class Hub extends AppCompatActivity {
                     }
                     addToList(wishlist);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -93,7 +92,6 @@ public class Hub extends AppCompatActivity {
         }else{
             returnToMain();
         }
-
     }
 
     public void onStart() {
@@ -146,5 +144,4 @@ public class Hub extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         wish.setAdapter(dataAdapter);
     }
-
 }

@@ -1,13 +1,11 @@
 package com.tlaskie.groupgift;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +33,6 @@ public class Main extends AppCompatActivity {
     }
 
     void login(View v){
-
         EditText EMAIL = findViewById(R.id.emailCreate);
         EditText PASS = findViewById(R.id.passwordCreate);
         String email = EMAIL.getText().toString();

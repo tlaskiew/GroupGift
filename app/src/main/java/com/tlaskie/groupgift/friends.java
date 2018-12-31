@@ -27,7 +27,6 @@ public class friends extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<String> items = new ArrayList<>();
     private List<String> curFriends = new ArrayList<>();
-    private static final String TAG = "friends";
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -46,7 +45,6 @@ public class friends extends AppCompatActivity {
         TextView email = findViewById(R.id.email);
         email.setText(user.getEmail());
 
-
         database.getReference("usernames").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -57,7 +55,6 @@ public class friends extends AppCompatActivity {
                 }
                 addToList();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
