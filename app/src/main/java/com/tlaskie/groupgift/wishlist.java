@@ -82,7 +82,6 @@ public class wishlist extends AppCompatActivity {
             });
 
 
-
             //Update the wishlist item details below
             Spinner curWishList = findViewById(R.id.spinnerCurrentWishlist);
             curWishList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -90,7 +89,9 @@ public class wishlist extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     final AdapterView<?> tempParent = parent;
                     final int tempPosition = position;
-                    if(!tempParent.getItemAtPosition(position).toString().equals("Your Wishlist:")) {
+                    if (!tempParent.getItemAtPosition(position).toString().equals("Your Wishlist:")) {
+                        TextView amount = findViewById(R.id.textAmountOfItems);
+                        amount.setVisibility(View.INVISIBLE);
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         database.getReference("users").child(user.getUid()).child("wishlist").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -116,7 +117,9 @@ public class wishlist extends AppCompatActivity {
 
                             }
                         });
-                    }else{
+                    } else {
+                        TextView amount = findViewById(R.id.textAmountOfItems);
+                        amount.setVisibility(View.VISIBLE);
                         recyclerView = findViewById(R.id.recyclerviewwishlist);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         recyclerView.setAdapter(null);
@@ -156,10 +159,6 @@ public class wishlist extends AppCompatActivity {
                 }
             });
         }
-
-
-
-
     }
 
     public void onStart() {
@@ -251,6 +250,18 @@ public class wishlist extends AppCompatActivity {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         wish.setAdapter(dataAdapter);
+
+        TextView amount = findViewById(R.id.textAmountOfItems);
+        if(amount.getVisibility() == View.VISIBLE) {
+            int count = list.size() - 1;
+            if (count == 0) {
+                amount.setText("You Have No \nItems In Your Wishlist!");
+            } else if (count == 1) {
+                amount.setText("You Have " + count + "\nItem In Your Wishlist!");
+            } else {
+                amount.setText("You Have " + count + "\nItems In Your Wishlist!");
+            }
+        }
     }
 
 }

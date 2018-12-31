@@ -69,43 +69,47 @@ public class createGiftGroup extends AppCompatActivity {
                     }
                 }
             }
-            final String finalMembers = members + "~" + user.getDisplayName();
-            groupMembers.add(user.getDisplayName());
-            List<String> secretGroup = secretGiftRandom(groupMembers);
+            if(groupMembers.size() != 0) {
+                final String finalMembers = members + "~" + user.getDisplayName();
+                groupMembers.add(user.getDisplayName());
+                List<String> secretGroup = secretGiftRandom(groupMembers);
 
-            final DatabaseReference newRef = database.getReference("usernames");
-            for(int i = 0; i < secretGroup.size(); i++) {
-                //Split and find out who has who
-                String temp = secretGroup.get(i).replace("-Has->", "~");
-                final String arrayOfPeople[] = temp.split("~");
-                newRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        //Person Giving Gift
-                        String UID1 = dataSnapshot.child(arrayOfPeople[0]).getValue().toString();
-                        //Person Receiving Gift
-                        String UID2 = dataSnapshot.child(arrayOfPeople[1]).getValue().toString();
+                final DatabaseReference newRef = database.getReference("usernames");
+                for (int i = 0; i < secretGroup.size(); i++) {
+                    //Split and find out who has who
+                    String temp = secretGroup.get(i).replace("-Has->", "~");
+                    final String arrayOfPeople[] = temp.split("~");
+                    newRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //Person Giving Gift
+                            String UID1 = dataSnapshot.child(arrayOfPeople[0]).getValue().toString();
+                            //Person Receiving Gift
+                            String UID2 = dataSnapshot.child(arrayOfPeople[1]).getValue().toString();
 
-                        //Give each user group info
-                        Map<String, Object> groupInfo = new HashMap<>();
-                        groupInfo.put("Your Secret Person", UID2);
-                        groupInfo.put("Name", groupName.getText().toString());
-                        groupInfo.put("Members", finalMembers);
-                        database.getReference("users").child(UID1).child("groups").child(groupName.getText().toString()).setValue(groupInfo);
-                    }
+                            //Give each user group info
+                            Map<String, Object> groupInfo = new HashMap<>();
+                            groupInfo.put("Your Secret Person", UID2);
+                            groupInfo.put("Name", groupName.getText().toString());
+                            groupInfo.put("Members", finalMembers);
+                            database.getReference("users").child(UID1).child("groups").child(groupName.getText().toString()).setValue(groupInfo);
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
 
+                }
+
+                Toast.makeText(getApplicationContext(), "Group Created!", Toast.LENGTH_SHORT).show();
+                finish();
+                Intent intent = new Intent(this, secretGiftGroup.class);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getApplicationContext(), "Select Some Friends!", Toast.LENGTH_SHORT).show();
             }
-
-            Toast.makeText(getApplicationContext(), "Group Created!", Toast.LENGTH_SHORT).show();
-            finish();
-            Intent intent = new Intent(this, secretGiftGroup.class);
-            startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(), "Select A Group Name!", Toast.LENGTH_SHORT).show();
         }
