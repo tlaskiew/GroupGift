@@ -128,6 +128,10 @@ public class createGiftGroup extends AppCompatActivity {
         return secretGifts;
     }
 
+    void createGroup(){
+
+    }
+
     void showList(){
         final List<String> friends = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();

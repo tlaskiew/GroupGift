@@ -16,8 +16,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,12 +36,20 @@ public class createAccount extends AppCompatActivity {
         setContentView(R.layout.activity_create_account);
 
         mAuth = FirebaseAuth.getInstance();
+
+        user = mAuth.getCurrentUser();
+        if (user != null) {
+            signedIn();
+        }
     }
 
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         user = mAuth.getCurrentUser();
+        if (user != null) {
+            signedIn();
+        }
     }
 
     void create(View v) {
@@ -67,30 +78,22 @@ public class createAccount extends AppCompatActivity {
         }else if(!password.equals(passwordConfirm)){
                 Toast.makeText(getApplicationContext(), "Passwords Don't Match!", Toast.LENGTH_LONG).show();
         }else{
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                user = mAuth.getCurrentUser();
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference("users").child(user.getUid());
-                                Map<String, Object> userInfo = new HashMap<>();
-                                userInfo.put("Username", username);
-                                myRef.setValue(userInfo);
-                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
-                                user.updateProfile(profileUpdate);
-                                //Add to list of current usernames in use
-                                myRef = database.getReference("usernames").child(username);
-                                myRef.setValue(user.getUid());
-                                signedIn();
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(getApplicationContext(), "Account Creation Failed!", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database.getReference("usernames").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.child(username).exists()) {
+                        createNewAccount(password, email, username);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Username Exists!", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -113,5 +116,33 @@ public class createAccount extends AppCompatActivity {
         finish();
         Intent intent = new Intent(this, Hub.class);
         startActivity(intent);
+    }
+
+    void createNewAccount(final String password, final String email, final String username){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            user = mAuth.getCurrentUser();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef = database.getReference("users").child(user.getUid());
+                            Map<String, Object> userInfo = new HashMap<>();
+                            userInfo.put("Username", username);
+                            myRef.setValue(userInfo);
+                            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+                            user.updateProfile(profileUpdate);
+                            //Add to list of current usernames in use
+                            myRef = database.getReference("usernames").child(username);
+                            myRef.setValue(user.getUid());
+                            signedIn();
+                        } else {
+                            // If sign in fails, display a message to the user.
+
+                            Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 }

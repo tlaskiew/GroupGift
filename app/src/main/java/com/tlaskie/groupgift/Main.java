@@ -32,6 +32,14 @@ public class Main extends AppCompatActivity {
         }
     }
 
+    protected void onStart() {
+        super.onStart();
+        user = mAuth.getCurrentUser();
+        if (user != null) {
+            signedIn();
+        }
+    }
+
     void login(View v){
         EditText EMAIL = findViewById(R.id.emailCreate);
         EditText PASS = findViewById(R.id.passwordCreate);

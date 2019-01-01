@@ -113,8 +113,10 @@ public class wishlist extends AppCompatActivity {
                             }
                         });
                     } else {
-                        TextView amount = findViewById(R.id.textAmountOfItems);
-                        amount.setVisibility(View.VISIBLE);
+                        if(findViewById(R.id.layoutAddView).getVisibility() == View.INVISIBLE && findViewById(R.id.layoutRemoveView).getVisibility() == View.INVISIBLE) {
+                            TextView amount = findViewById(R.id.textAmountOfItems);
+                            amount.setVisibility(View.VISIBLE);
+                        }
                         recyclerView = findViewById(R.id.recyclerviewwishlist);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         recyclerView.setAdapter(null);
@@ -163,7 +165,6 @@ public class wishlist extends AppCompatActivity {
         if (user == null) {
             returnToMain();
         }
-
     }
 
     void addToWishlist(View v){
