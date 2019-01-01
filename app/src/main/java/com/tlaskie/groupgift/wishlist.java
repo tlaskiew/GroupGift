@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -206,6 +207,9 @@ public class wishlist extends AppCompatActivity {
         View viewRemove = findViewById(R.id.layoutRemoveView);
         viewRemove.setVisibility(View.VISIBLE);
         viewAdd.setVisibility(View.INVISIBLE);
+
+        TextView amount = findViewById(R.id.textAmountOfItems);
+        amount.setVisibility(View.INVISIBLE);
     }
 
     void removeCur(View v){
@@ -227,6 +231,9 @@ public class wishlist extends AppCompatActivity {
         View viewRemove = findViewById(R.id.layoutRemoveView);
         viewRemove.setVisibility(View.INVISIBLE);
         viewAdd.setVisibility(View.VISIBLE);
+
+        TextView amount = findViewById(R.id.textAmountOfItems);
+        amount.setVisibility(View.INVISIBLE);
     }
 
     boolean check(EditText text){
