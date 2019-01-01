@@ -65,16 +65,47 @@ public class secretGiftGroup extends AppCompatActivity {
         getGroups();
     }
 
+    public void onStart() {
+        super.onStart();
+        Spinner wishlist = findViewById(R.id.spinnerGroups);
+        wishlist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final AdapterView<?> tempParent = parent;
+                final int tempPosition = position;
+                if (!tempParent.getItemAtPosition(position).toString().equals("Select Group To View")) {
+                    showDetails(tempParent.getItemAtPosition(position).toString());
+                } else {
+                    showDetails("clear");
+                    findViewById(R.id.textPersonTitle).setVisibility(View.INVISIBLE);
+                    TextView text = findViewById(R.id.textPerson);
+                    text.setText("");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        getGroups();
+    }
+
     void getGroups(){
         //Get groups from database and split them with details
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference("users").child(user.getUid()).child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                groupNames.add("Select Group To View");
+                if(!groupNames.contains("Select Group To View")) {
+                    groupNames.add("Select Group To View");
+                }
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        groupNames.add(dsp.child("Name").getValue().toString());
+                        if(!groupNames.contains(dsp.child("Name").getValue().toString())) {
+                            groupNames.add(dsp.child("Name").getValue().toString());
+                        }
                     }
                 }
                 addToList(groupNames);

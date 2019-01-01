@@ -99,11 +99,8 @@ public class createGiftGroup extends AppCompatActivity {
                     });
 
                 }
-
                 Toast.makeText(getApplicationContext(), "Group Created!", Toast.LENGTH_SHORT).show();
                 finish();
-                Intent intent = new Intent(this, secretGiftGroup.class);
-                startActivity(intent);
             }else{
                 Toast.makeText(getApplicationContext(), "Select Some Friends!", Toast.LENGTH_SHORT).show();
             }
@@ -142,7 +139,9 @@ public class createGiftGroup extends AppCompatActivity {
                     String arrayOfFriends[] = Friends.split("~");
                     friends.addAll(Arrays.asList(arrayOfFriends));
                     recyclerView = findViewById(R.id.recyclerviewgroup);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+                    recyclerView.setLayoutManager(manager);
+                    recyclerView.setHasFixedSize(true);
                     recyclerView.setAdapter(new AdapterGroup(getApplicationContext(), friends));
                 }else{
                     TextView none = findViewById(R.id.textViewNone);
