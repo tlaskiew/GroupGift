@@ -51,7 +51,10 @@ public class secretGiftGroup extends AppCompatActivity {
                 }else{
                     showDetails("clear");
                     findViewById(R.id.textPersonTitle).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.textBudgetTitle).setVisibility(View.INVISIBLE);
                     TextView text = findViewById(R.id.textPerson);
+                    TextView textAmount = findViewById(R.id.textBudgetAmount);
+                    textAmount.setText("");
                     text.setText("");
                 }
             }
@@ -78,7 +81,10 @@ public class secretGiftGroup extends AppCompatActivity {
                 } else {
                     showDetails("clear");
                     findViewById(R.id.textPersonTitle).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.textBudgetTitle).setVisibility(View.INVISIBLE);
                     TextView text = findViewById(R.id.textPerson);
+                    TextView textAmount = findViewById(R.id.textBudgetAmount);
+                    textAmount.setText("");
                     text.setText("");
                 }
             }
@@ -125,9 +131,10 @@ public class secretGiftGroup extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     String personsUID = dataSnapshot.child("Your Secret Person").getValue().toString();
-                    updateAdapter(personsUID, selected);
+                    String budget = dataSnapshot.child("Budget").getValue().toString();
+                    updateAdapter(personsUID, selected, budget);
                 }else{
-                    updateAdapter("none", "none" );
+                    updateAdapter("none", "none", "none");
                 }
             }
 
@@ -138,7 +145,7 @@ public class secretGiftGroup extends AppCompatActivity {
         });
     }
 
-    void updateAdapter(String personsUID, final String selected){
+    void updateAdapter(String personsUID, final String selected, final String budget){
         if(personsUID.equals("none") && selected.equals("none")){
             recyclerView = findViewById(R.id.recyclerviewsecretgroup);
             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -159,6 +166,7 @@ public class secretGiftGroup extends AppCompatActivity {
 
                     }
                     findViewById(R.id.textPersonTitle).setVisibility(View.VISIBLE);
+                    findViewById(R.id.textBudgetTitle).setVisibility(View.VISIBLE);
                     recyclerView = findViewById(R.id.recyclerviewsecretgroup);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     recyclerView.setAdapter(new AdapterWishlist(getApplicationContext(), details));
@@ -175,6 +183,8 @@ public class secretGiftGroup extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String name = dataSnapshot.child("Username").getValue().toString();
                     TextView text = findViewById(R.id.textPerson);
+                    TextView Budget = findViewById(R.id.textBudgetAmount);
+                    Budget.setText(budget);
                     text.setText(name);
                 }
 
