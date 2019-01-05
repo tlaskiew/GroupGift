@@ -97,41 +97,47 @@ public class createGiftGroup extends AppCompatActivity {
                 //Create Assignments
                 List<Integer> assignments = generateAssignments(groupMembers.size(), excludedPeople , groupMembers);
                 List<String> secretGroup = new ArrayList<>();
-                for (int i = 0; i < assignments.size(); i++) {
-                    secretGroup.add(groupMembers.get(i) + "-Has->" + groupMembers.get(assignments.get(i)));
+
+                if(assignments.size() == 1 && assignments.get(0).equals(-101)){
+                    Toast.makeText(getApplicationContext(), "Too Many Exclusions, Try Again!", Toast.LENGTH_SHORT).show();
+                    reset();
+                }else {
+                    for (int i = 0; i < assignments.size(); i++) {
+                        secretGroup.add(groupMembers.get(i) + "-Has->" + groupMembers.get(assignments.get(i)));
+                    }
+
+                    final DatabaseReference newRef = database.getReference("usernames");
+                    for (int i = 0; i < secretGroup.size(); i++) {
+                        //Split and find out who has who
+                        String temp = secretGroup.get(i).replace("-Has->", "~");
+                        final String arrayOfPeople[] = temp.split("~");
+                        newRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                //Person Giving Gift
+                                String UID1 = dataSnapshot.child(arrayOfPeople[0]).getValue().toString();
+                                //Person Receiving Gift
+                                String UID2 = dataSnapshot.child(arrayOfPeople[1]).getValue().toString();
+
+                                //Give each user group info
+                                Map<String, Object> groupInfo = new HashMap<>();
+                                groupInfo.put("Your Secret Person", UID2);
+                                groupInfo.put("Name", groupName.getText().toString());
+                                groupInfo.put("Members", finalMembers);
+                                groupInfo.put("Budget", budget);
+                                database.getReference("users").child(UID1).child("groups").child(groupName.getText().toString()).setValue(groupInfo);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                    Toast.makeText(getApplicationContext(), "Group Created!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
-
-                final DatabaseReference newRef = database.getReference("usernames");
-                for (int i = 0; i < secretGroup.size(); i++) {
-                    //Split and find out who has who
-                    String temp = secretGroup.get(i).replace("-Has->", "~");
-                    final String arrayOfPeople[] = temp.split("~");
-                    newRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            //Person Giving Gift
-                            String UID1 = dataSnapshot.child(arrayOfPeople[0]).getValue().toString();
-                            //Person Receiving Gift
-                            String UID2 = dataSnapshot.child(arrayOfPeople[1]).getValue().toString();
-
-                            //Give each user group info
-                            Map<String, Object> groupInfo = new HashMap<>();
-                            groupInfo.put("Your Secret Person", UID2);
-                            groupInfo.put("Name", groupName.getText().toString());
-                            groupInfo.put("Members", finalMembers);
-                            groupInfo.put("Budget", budget);
-                            database.getReference("users").child(UID1).child("groups").child(groupName.getText().toString()).setValue(groupInfo);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-                Toast.makeText(getApplicationContext(), "Group Created!", Toast.LENGTH_SHORT).show();
-                finish();
             }else{
                 Toast.makeText(getApplicationContext(), "Group Creation Failed!", Toast.LENGTH_LONG).show();
                 reset();
@@ -141,6 +147,7 @@ public class createGiftGroup extends AppCompatActivity {
         }
     }
 
+    //Gather and Display All Friends
     void showList(){
         final List<String> friends = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -162,7 +169,6 @@ public class createGiftGroup extends AppCompatActivity {
                     none.setText("No Friends Found!");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -192,9 +198,15 @@ public class createGiftGroup extends AppCompatActivity {
     //Generate Assignments by their int position and shuffle + check until assignment is valid
     List<Integer> generateAssignments(final int size, final List<String> exclusions, final List<String> members) {
         final List<Integer> assignments = generateShuffledList(size);
-
+        int count = 0;
         while (!areValidAssignments(assignments, exclusions, members)) {
             Collections.shuffle(assignments, random);
+            count++;
+            if(count == 100){
+                //Failed To Find Any Valid Options. Too Many Exclusions
+                assignments.clear();
+                assignments.add(-101);
+            }
         }
 
         return assignments;

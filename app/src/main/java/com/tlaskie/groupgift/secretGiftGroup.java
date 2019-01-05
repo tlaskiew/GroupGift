@@ -146,10 +146,12 @@ public class secretGiftGroup extends AppCompatActivity {
     }
 
     void updateAdapter(String personsUID, final String selected, final String budget){
+        final TextView noItems = findViewById(R.id.textNoItems);
         if(personsUID.equals("none") && selected.equals("none")){
             recyclerView = findViewById(R.id.recyclerviewsecretgroup);
             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             recyclerView.setAdapter(null);
+            noItems.setVisibility(View.INVISIBLE);
         }else {
             //Get and Populate the Adapter with user's wishlist
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -164,6 +166,12 @@ public class secretGiftGroup extends AppCompatActivity {
                         String location = dsp.child("Location").getValue().toString();
                         details.add(name + "~" + desc + "~" + price + "~" + location);
 
+                    }
+
+                    if(details.isEmpty()){
+                        noItems.setVisibility(View.VISIBLE);
+                    }else{
+                        noItems.setVisibility(View.INVISIBLE);
                     }
                     findViewById(R.id.textPersonTitle).setVisibility(View.VISIBLE);
                     findViewById(R.id.textBudgetTitle).setVisibility(View.VISIBLE);

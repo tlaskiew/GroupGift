@@ -73,6 +73,8 @@ public class createAccount extends AppCompatActivity {
                 view.setGravity(Gravity.CENTER);
             }
             toast.show();
+        }else if(username.length() >= 10) {
+            Toast.makeText(getApplicationContext(), "Username Must Be 10 Or Less Characters.", Toast.LENGTH_LONG).show();
         }else if(password.length() <= 8) {
             Toast.makeText(getApplicationContext(), "Password Must Be 8 Characters Or Longer.", Toast.LENGTH_LONG).show();
         }else if(!password.equals(passwordConfirm)){
@@ -88,7 +90,6 @@ public class createAccount extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Username Exists!", Toast.LENGTH_LONG).show();
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -139,8 +140,12 @@ public class createAccount extends AppCompatActivity {
                             signedIn();
                         } else {
                             // If sign in fails, display a message to the user.
-
-                            Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Toast toast = Toast.makeText(getApplicationContext(), "Account Creation Failed:\nCheck Account Credentials!", Toast.LENGTH_LONG);
+                            TextView view = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if(view != null) {
+                                view.setGravity(Gravity.CENTER);
+                            }
+                            toast.show();
                         }
                     }
                 });
