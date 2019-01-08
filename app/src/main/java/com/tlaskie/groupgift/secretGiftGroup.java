@@ -159,13 +159,14 @@ public class secretGiftGroup extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     List<String> details = new ArrayList<>();
-                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        String name = dsp.child("Name").getValue().toString();
-                        String desc = dsp.child("Description").getValue().toString();
-                        String price = dsp.child("Price").getValue().toString();
-                        String location = dsp.child("Location").getValue().toString();
-                        details.add(name + "~" + desc + "~" + price + "~" + location);
-
+                    if(dataSnapshot.exists()) {
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                            String name = dsp.child("Name").getValue().toString();
+                            String desc = dsp.child("Description").getValue().toString();
+                            String price = dsp.child("Price").getValue().toString();
+                            String location = dsp.child("Location").getValue().toString();
+                            details.add(name + "~" + desc + "~" + price + "~" + location);
+                        }
                     }
 
                     if(details.isEmpty()){
@@ -178,6 +179,7 @@ public class secretGiftGroup extends AppCompatActivity {
                     recyclerView = findViewById(R.id.recyclerviewsecretgroup);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     recyclerView.setAdapter(new AdapterWishlist(getApplicationContext(), details));
+
                 }
 
                 @Override

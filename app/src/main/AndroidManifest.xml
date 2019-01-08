@@ -12,17 +12,23 @@
         <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".createAccount" />
+        <activity android:name=".createAccount"
+            android:parentActivityName=".Main"/>
         <activity android:name=".Hub" />
-        <activity android:name=".wishlist" />
-        <activity android:name=".accountSettings" />
-        <activity android:name=".friends" />
-        <activity android:name=".secretGiftGroup" />
-        <activity android:name=".createGiftGroup"></activity>
+        <activity android:name=".wishlist"
+            android:parentActivityName=".Hub"/>
+        <activity android:name=".accountSettings"
+            android:parentActivityName=".Hub"/>
+        <activity android:name=".friends"
+            android:parentActivityName=".Hub"/>
+        <activity android:name=".secretGiftGroup"
+            android:parentActivityName=".Hub"/>
+        <activity android:name=".createGiftGroup"
+            android:parentActivityName=".secretGiftGroup"/>
+        <activity android:name=".friendsWishlist"
+            android:parentActivityName=".Hub"/>
     </application>
-
 </manifest>
