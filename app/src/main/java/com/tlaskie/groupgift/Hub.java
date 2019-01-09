@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -89,6 +90,43 @@ public class Hub extends AppCompatActivity {
 
                 }
             });
+
+            Button buttonWishlist = findViewById(R.id.buttonWishlist);
+            Button buttonFriends = findViewById(R.id.buttonFriends);
+            Button buttonFriendsWishlist = findViewById(R.id.buttonFriendsWishlist);
+            Button buttonSecretGifts = findViewById(R.id.buttonSecretGifts);
+            Button buttonSettings = findViewById(R.id.buttonAccountSettings);
+
+            buttonWishlist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToFriendsWishlist();
+                }
+            });
+            buttonFriends.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToFriends();
+                }
+            });
+            buttonFriendsWishlist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToFriendsWishlist();
+                }
+            });
+            buttonSecretGifts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToSecretGiftGroup();
+                }
+            });
+            buttonSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToAccountSettings();
+                }
+            });
         }else{
             returnToMain();
         }
@@ -113,32 +151,32 @@ public class Hub extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void logout(View v){
+    void logout(){
         FirebaseAuth.getInstance().signOut();
         returnToMain();
     }
 
-    void goToWishlist(View v){
+    void goToWishlist(){
         Intent intent = new Intent(this, wishlist.class);
         startActivity(intent);
     }
 
-    void goToFriends(View v){
+    void goToFriends(){
         Intent intent = new Intent(this, friends.class);
         startActivity(intent);
     }
 
-    void goToAccountSettings(View v){
+    void goToAccountSettings(){
         Intent intent = new Intent(this, accountSettings.class);
         startActivity(intent);
     }
 
-    void goToSecretGiftGroup(View v){
+    void goToSecretGiftGroup(){
         Intent intent = new Intent(this, secretGiftGroup.class);
         startActivity(intent);
     }
 
-    void goToFriendsWishlist(View v){
+    void goToFriendsWishlist(){
         Intent intent = new Intent(this, friendsWishlist.class);
         startActivity(intent);
     }

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,14 @@ public class createAccount extends AppCompatActivity {
         if (user != null) {
             signedIn();
         }
+
+        Button createAccount = findViewById(R.id.createAccountButton);
+        createAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                create();
+            }
+        });
     }
 
     public void onStart() {
@@ -52,7 +61,7 @@ public class createAccount extends AppCompatActivity {
         }
     }
 
-    void create(View v) {
+    void create() {
         EditText EMAIL = findViewById(R.id.emailCreate);
         EditText PASS = findViewById(R.id.passwordCreate);
         EditText PASSCONFIRM = findViewById(R.id.passwordCreate2);

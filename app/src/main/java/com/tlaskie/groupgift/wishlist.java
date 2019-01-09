@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -45,6 +46,38 @@ public class wishlist extends AppCompatActivity {
         if (user == null) {
             returnToMain();
         }else {
+            //Setup Buttons
+            Button removeView = findViewById(R.id.buttonRemoveItemView);
+            Button addView = findViewById(R.id.buttonAddItemView);
+            Button add = findViewById(R.id.buttonCreateItem);
+            Button remove = findViewById(R.id.buttonRemoveCurrent);
+
+            removeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    remove();
+                }
+            });
+            addView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    add();
+                }
+            });
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addToWishlist();
+                }
+            });
+            remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeCur();
+                }
+            });
+
+
             //Setup spinner
             wishlist.add("Your Wishlist:");
             addToList(wishlist);
@@ -167,7 +200,7 @@ public class wishlist extends AppCompatActivity {
         }
     }
 
-    void addToWishlist(View v){
+    void addToWishlist(){
         EditText name = findViewById(R.id.itemName);
         EditText desc = findViewById(R.id.itemDescription);
         EditText price = findViewById(R.id.itemPrice);
@@ -203,7 +236,7 @@ public class wishlist extends AppCompatActivity {
         }
     }
 
-    void remove(View v){
+    void remove(){
         View viewAdd = findViewById(R.id.layoutAddView);
         View viewRemove = findViewById(R.id.layoutRemoveView);
         viewRemove.setVisibility(View.VISIBLE);
@@ -213,7 +246,7 @@ public class wishlist extends AppCompatActivity {
         amount.setVisibility(View.INVISIBLE);
     }
 
-    void removeCur(View v){
+    void removeCur(){
         Spinner current = findViewById(R.id.spinnerCurrentWishlist);
         String curItem = current.getSelectedItem().toString();
 
@@ -227,7 +260,7 @@ public class wishlist extends AppCompatActivity {
         }
     }
 
-    void add(View v){
+    void add(){
         View viewAdd = findViewById(R.id.layoutAddView);
         View viewRemove = findViewById(R.id.layoutRemoveView);
         viewRemove.setVisibility(View.INVISIBLE);

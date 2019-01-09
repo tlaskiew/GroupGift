@@ -45,7 +45,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#d90b0b"
-        android:onClick="logout"
         android:text="Logout"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/username"
@@ -85,7 +84,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#34a91a"
-                android:onClick="goToWishlist"
                 android:text="Go"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="97dp" />
@@ -108,7 +106,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#34a91a"
-                android:onClick="goToFriends"
                 android:text="Go" />
 
             <TextView
@@ -129,7 +126,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#34a91a"
-                android:onClick="goToFriendsWishlist"
                 android:text="Go" />
 
             <TextView
@@ -150,7 +146,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#34a91a"
-                android:onClick="goToSecretGiftGroup"
                 android:text="Go" />
 
             <TextView
@@ -171,7 +166,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#34a91a"
-                android:onClick="goToAccountSettings"
                 android:text="Go" />
 
             <TextView

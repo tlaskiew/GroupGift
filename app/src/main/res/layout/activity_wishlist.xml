@@ -33,7 +33,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#34a91a"
-        android:onClick="add"
         android:text="Add Item View"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -45,7 +44,6 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#d90b0b"
-        android:onClick="remove"
         android:text="Remove Item View"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -156,7 +154,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#34a91a"
-            android:onClick="addToWishlist"
             android:text="Add To Wishlist"
             app:layout_constraintTop_toBottomOf="@+id/itemLocation" />
     </android.support.constraint.ConstraintLayout>
@@ -183,7 +180,6 @@
                 android:layout_width="368dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#d90b0b"
-                android:onClick="removeCur"
                 android:text="Remove Current Item"
                 android:textColor="@android:color/white" />
         </TableRow>

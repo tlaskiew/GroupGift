@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,14 @@ public class friends extends AppCompatActivity {
         if(user == null){
             returnToMain();
         }
+
+        Button confirmFriends = findViewById(R.id.buttonConfirm);
+        confirmFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateFriendList();
+            }
+        });
 
         TextView email = findViewById(R.id.email);
         email.setText(user.getEmail());
@@ -98,7 +107,7 @@ public class friends extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void updateFriendList(View v){
+    void updateFriendList(){
         List<String> friends = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview);
         FirebaseDatabase database = FirebaseDatabase.getInstance();

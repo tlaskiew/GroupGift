@@ -50,6 +50,38 @@ public class createGiftGroup extends AppCompatActivity {
             returnToMain();
         }
 
+        //Setup Buttons
+        Button createGroup = findViewById(R.id.buttonCreateGroup);
+        Button exclude = findViewById(R.id.buttonExclude);
+        Button next = findViewById(R.id.buttonNext);
+        Button reset = findViewById(R.id.buttonReset);
+
+        createGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGroup();
+            }
+        });
+        exclude.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exclude();
+            }
+        });
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                next();
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reset();
+            }
+        });
+
+
         recyclerView = findViewById(R.id.recyclerviewgroup);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(manager);
@@ -66,7 +98,7 @@ public class createGiftGroup extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
     }
 
-    void createGroup(View v){
+    void createGroup(){
         final List<String> groupMembers = new ArrayList<>();
         final EditText groupName = findViewById(R.id.textGroupName);
         final EditText BUDGET = findViewById(R.id.textBudget);
@@ -249,7 +281,7 @@ public class createGiftGroup extends AppCompatActivity {
     }
 
     //Setup UI
-    void exclude(View v){
+    void exclude(){
         String members = "";
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             CheckBox current = (recyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.checkboxadd));
@@ -299,7 +331,7 @@ public class createGiftGroup extends AppCompatActivity {
     }
 
     //Next person's rules
-    void next(View v){
+    void next(){
         recyclerViewExclude = findViewById(R.id.recyclerviewExclude);
         TextView textName = findViewById(R.id.textNextName);
         if(people.size() == 0){
@@ -369,9 +401,6 @@ public class createGiftGroup extends AppCompatActivity {
         return members;
     }
 
-    void resetActivity(View v){
-        reset();
-    }
 
     //Clear entire activity of information
     void reset(){

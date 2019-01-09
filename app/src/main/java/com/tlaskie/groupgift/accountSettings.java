@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,14 @@ public class accountSettings extends AppCompatActivity {
             TextView USERNAME = findViewById(R.id.textUsername);
             EMAIL.setText(email);
             USERNAME.setText(username);
+
+            Button logout = findViewById(R.id.buttonLogout);
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
         }else{
             returnToMain();
         }
@@ -38,7 +47,7 @@ public class accountSettings extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void logout(View v){
+    void logout(){
         finish();
         FirebaseAuth.getInstance().signOut();
         returnToMain();

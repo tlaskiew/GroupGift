@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,21 @@ public class secretGiftGroup extends AppCompatActivity {
         if(user == null){
             returnToMain();
         }
+
+        Button add = findViewById(R.id.buttonGoToCreate);
+        Button remove = findViewById(R.id.removeSecretGiftGroup);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToCreateGroup();
+            }
+        });
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteGroup();
+            }
+        });
 
         Spinner wishlist = findViewById(R.id.spinnerGroups);
         wishlist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -213,7 +229,7 @@ public class secretGiftGroup extends AppCompatActivity {
         groups.setAdapter(dataAdapter);
     }
 
-    void goToCreateGroup(View v){
+    void goToCreateGroup(){
         Intent intent = new Intent(this, createGiftGroup.class);
         startActivity(intent);
     }
@@ -224,7 +240,7 @@ public class secretGiftGroup extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void deleteGroup(View v){
+    void deleteGroup(){
         //Delete Group For Everyone
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         Spinner spin = findViewById(R.id.spinnerGroups);

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,6 +31,21 @@ public class Main extends AppCompatActivity {
         if (user != null) {
             signedIn();
         }
+
+        Button login = findViewById(R.id.buttonLogin);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
+        Button create = findViewById(R.id.createAccountButton);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAccount();
+            }
+        });
     }
 
     protected void onStart() {
@@ -40,7 +56,7 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    void login(View v){
+    void login(){
         EditText EMAIL = findViewById(R.id.emailCreate);
         EditText PASS = findViewById(R.id.passwordCreate);
         String email = EMAIL.getText().toString();
@@ -67,7 +83,7 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    void createAccount(View v){
+    void createAccount(){
         Intent intent = new Intent(this, createAccount.class);
         startActivity(intent);
     }
