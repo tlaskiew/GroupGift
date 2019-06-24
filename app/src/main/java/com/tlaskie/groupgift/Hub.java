@@ -96,11 +96,12 @@ public class Hub extends AppCompatActivity {
             Button buttonFriendsWishlist = findViewById(R.id.buttonFriendsWishlist);
             Button buttonSecretGifts = findViewById(R.id.buttonSecretGifts);
             Button buttonSettings = findViewById(R.id.buttonAccountSettings);
+            Button buttonLogout = findViewById(R.id.buttonLogout);
 
             buttonWishlist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goToFriendsWishlist();
+                    goToWishlist();
                 }
             });
             buttonFriends.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +126,12 @@ public class Hub extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     goToAccountSettings();
+                }
+            });
+            buttonLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v){
+                    logout();
                 }
             });
         }else{
